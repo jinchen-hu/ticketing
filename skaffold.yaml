@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: jinchenhu/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "scr/**/*.ts"
+            dest: .
