@@ -16,6 +16,6 @@ spec:
             path: "/api/users/?(.*)"
             backend:
               service:
-                name: auth-srv
+                name: ticketing-auth-srv
                 port:
                   number: 3000
