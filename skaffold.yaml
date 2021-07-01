@@ -18,3 +18,13 @@ build:
         manual:
           - src: "scr/**/*.ts"
             dest: .
+    - image: jinchenhu/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - dest: .
+            src: "**/*.js"
