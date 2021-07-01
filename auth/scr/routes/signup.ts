@@ -43,7 +43,7 @@ router.post(
 
     req.session = { jwt: userJwt };
 
-    res.status(StatusCodes.OK).send(user);
+    res.status(StatusCodes.CREATED).send(user);
   }
 );
 
