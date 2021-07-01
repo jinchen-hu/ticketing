@@ -23,7 +23,7 @@ router.post(
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.error("Email in use");
+      //console.error("Email in use");
       throw new BadRequestError("Email in use");
     }
 
