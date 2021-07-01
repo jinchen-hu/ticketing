@@ -52,4 +52,6 @@ const start = async () => {
   }
 };
 
-const promise = start();
+start().catch(() => {
+  console.log("Failed to start");
+});
