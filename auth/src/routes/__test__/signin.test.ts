@@ -39,7 +39,7 @@ it("responds with a cookie when valid credentials given", async () => {
     })
     .expect(StatusCodes.CREATED);
 
-  const resonse = await request(app)
+  const response = await request(app)
     .post("/api/users/signin")
     .send({
       email: "test@test.com",
@@ -47,5 +47,5 @@ it("responds with a cookie when valid credentials given", async () => {
     })
     .expect(StatusCodes.OK);
 
-  expect(resonse.get("Set-Cookie")).toBeDefined();
+  expect(response.get("Set-Cookie")).toBeDefined();
 });

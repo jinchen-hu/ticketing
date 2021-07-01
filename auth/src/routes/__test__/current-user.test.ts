@@ -1,17 +1,10 @@
 import request from "supertest";
 import app from "../../app";
 import { StatusCodes } from "http-status-codes";
+import { getAuthCookie } from "../../test/setup";
 
 it("responds with details about the current user", async () => {
-  const authResponse = await request(app)
-    .post("/api/users/signup")
-    .send({
-      email: "test@test.com",
-      password: "1234",
-    })
-    .expect(StatusCodes.CREATED);
-
-  const cookie = authResponse.get("Set-Cookie");
+  const cookie = await getAuthCookie();
 
   const response = await request(app)
     .get("/api/users/currentuser")
@@ -20,4 +13,13 @@ it("responds with details about the current user", async () => {
     .expect(StatusCodes.OK);
 
   expect(response.body.currentUser.email).toEqual("test@test.com");
+});
+
+it("responds null if not authenticated", async () => {
+  const response = await request(app)
+    .get("/api/users/currentuser")
+    .send()
+    .expect(StatusCodes.OK);
+
+  expect(response.body.currentUser).toEqual(null);
 });
