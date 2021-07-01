@@ -1,8 +1,9 @@
 import { ValidationError } from "express-validator";
 import { CustomError } from "./custom-error";
+import { StatusCodes } from "http-status-codes";
 
 export class RequestValidationError extends CustomError {
-  readonly statusCode = 400;
+  readonly statusCode = StatusCodes.BAD_REQUEST;
 
   constructor(private errors: ValidationError[]) {
     super("Invalid request parameters");
