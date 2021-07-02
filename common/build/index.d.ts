@@ -3,3 +3,4 @@ interface Color {
     blue: string;
 }
 declare const color: Color;
+export default color;
