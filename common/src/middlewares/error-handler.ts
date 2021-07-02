@@ -11,6 +11,8 @@ export const errorHandler = (
   if (err instanceof CustomError) {
     return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
+
+  console.error(err);
   res.status(StatusCodes.BAD_REQUEST).send({
     message: err.message,
   });
