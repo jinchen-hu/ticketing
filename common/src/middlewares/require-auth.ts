@@ -3,7 +3,7 @@ import { NotAuthorized } from "../errors/not-authorized";
 
 export const requireAuth = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   if (!req.currentUser) {
