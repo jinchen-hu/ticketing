@@ -1,7 +1,13 @@
 import express, { NextFunction } from "express";
 import "express-async-errors";
-import { errorHandler, NotFoundError } from "@luketicketing/common";
+import {
+  errorHandler,
+  NotFoundError,
+  currentUser,
+} from "@luketicketing/common";
 import cookieSession from "cookie-session";
+import { createTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -13,6 +19,11 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   })
 );
+
+app.use(currentUser);
+
+app.use(createTicketRouter);
+app.use(showTicketRouter);
 
 app.all("*", async (_req, _res, _next: NextFunction) => {
   throw new NotFoundError();
