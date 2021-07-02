@@ -22,7 +22,7 @@ var NotAuthorized = /** @class */ (function (_super) {
     __extends(NotAuthorized, _super);
     function NotAuthorized() {
         var _this = _super.call(this, "Not Authorized") || this;
-        _this.statusCode = http_status_codes_1.StatusCodes.FORBIDDEN;
+        _this.statusCode = http_status_codes_1.StatusCodes.UNAUTHORIZED;
         return _this;
     }
     NotAuthorized.prototype.serializeErrors = function () {
