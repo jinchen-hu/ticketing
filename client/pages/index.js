@@ -8,6 +8,7 @@ const HomePage = ({ currentUser }) => {
 };
 
 export async function getServerSideProps(context) {
+  console.log("FROM INDEX PAGE");
   const client = buildClient(context);
   const { data } = await client.get("/api/users/currentuser").catch((e) => {
     console.log(e);
