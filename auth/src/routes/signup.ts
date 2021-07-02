@@ -1,11 +1,13 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { DatabaseConnectionError } from "../errors/database-connection-error";
-import { BadRequestError } from "../errors/bad-request-error";
+import {
+  DatabaseConnectionError,
+  BadRequestError,
+  validateRequest,
+} from "@luketicketing/common";
 import { User } from "../models/user";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
-import { validateRequest } from "../middlewares/validate-request";
 
 const router = express.Router();
 
