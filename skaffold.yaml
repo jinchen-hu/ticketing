@@ -28,3 +28,13 @@ build:
         manual:
           - dest: .
             src: "**/*.js"
+    - image: jinchenhu/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "scr/**/*.ts"
+            dest: .
