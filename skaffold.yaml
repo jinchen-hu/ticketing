@@ -38,3 +38,13 @@ build:
         manual:
           - src: "scr/**/*.ts"
             dest: .
+    - image: jinchenhu/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "scr/**/*.ts"
+            dest: .
