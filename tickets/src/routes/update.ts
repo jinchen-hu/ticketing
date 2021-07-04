@@ -6,7 +6,7 @@ import {
   NotFoundError,
   requireAuth,
   validateRequest,
-} from "@luketicketing/common/build";
+} from "@luketicketing/common";
 import { Ticket } from "../models/ticket";
 
 const router = express.Router();
