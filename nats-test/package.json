@@ -15,5 +15,8 @@
     "node-nats-streaming": "^0.3.2",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
   }
 }
