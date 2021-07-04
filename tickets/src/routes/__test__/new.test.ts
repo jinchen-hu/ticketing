@@ -3,6 +3,7 @@ import app from "../../app";
 import { StatusCodes } from "http-status-codes";
 import { getMockCookie } from "../../test/setup";
 import { Ticket, TicketDoc } from "../../models/ticket";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("has a route handler listening to /api/tickets for post requests", async () => {
   const response = await request(app).post("/api/tickets").send({});
@@ -82,4 +83,19 @@ it("creates a ticket with valid inputs", async () => {
   expect(tickets.length).toEqual(1);
   expect(tickets[0].price).toEqual(price);
   expect(tickets[0].title).toEqual(title);
+});
+
+it("publishes an event", async () => {
+  const title: string = "Sydney Concert";
+  const price: number = 10;
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", getMockCookie())
+    .send({
+      title,
+      price,
+    })
+    .expect(StatusCodes.CREATED);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
