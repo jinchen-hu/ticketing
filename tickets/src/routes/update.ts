@@ -7,7 +7,9 @@ import {
   requireAuth,
   validateRequest,
 } from "@luketicketing/common";
-import { Ticket } from "../models/ticket";
+import { Ticket, TicketDoc } from "../models/ticket";
+import { TicketUpdatedPublisher } from "../events/publisher/ticket-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -22,7 +24,7 @@ router.put(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    let ticket;
+    let ticket: TicketDoc | null;
     try {
       ticket = await Ticket.findById(req.params.id);
     } catch (e) {
@@ -44,6 +46,13 @@ router.put(
         price: req.body.price,
       });
       await ticket.save();
+
+      await new TicketUpdatedPublisher(natsWrapper.client).publish({
+        title: ticket.title,
+        price: ticket.price,
+        id: ticket.id,
+        userId: ticket.userId,
+      });
     } catch (e) {
       throw new DatabaseConnectionError();
     }

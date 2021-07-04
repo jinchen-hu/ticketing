@@ -23,6 +23,7 @@ app.use(
 );
 
 app.use(currentUser);
+app.use(errorHandler);
 
 app.use(indexTicketRouter);
 app.use(createTicketRouter);
@@ -32,7 +33,5 @@ app.use(updateTicketRouter);
 app.all("*", async (_req, _res, _next: NextFunction) => {
   throw new NotFoundError();
 });
-
-app.use(errorHandler);
 
 export default app;

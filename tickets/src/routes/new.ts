@@ -4,9 +4,11 @@ import {
   DatabaseConnectionError,
   requireAuth,
   validateRequest,
-} from "@luketicketing/common/build";
+} from "@luketicketing/common";
 import { body } from "express-validator";
-import { Ticket } from "../models/ticket";
+import { Ticket, TicketDoc } from "../models/ticket";
+import { TicketCreatedPublisher } from "../events/publisher/ticket-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -23,7 +25,7 @@ router.post(
   async (req: Request, res: Response) => {
     const { title, price } = req.body;
 
-    const ticket = Ticket.build({
+    const ticket: TicketDoc = Ticket.build({
       title,
       price,
       userId: req.currentUser!.id,
@@ -31,6 +33,12 @@ router.post(
 
     try {
       await ticket.save();
+      await new TicketCreatedPublisher(natsWrapper.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId,
+      });
     } catch (e) {
       throw new DatabaseConnectionError();
     }
