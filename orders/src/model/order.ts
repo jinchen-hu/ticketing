@@ -7,7 +7,7 @@ export interface OrderAttrs {
   userId: string;
   status: OrderStatus;
   expiresAt: Date;
-  ticket: TicketDoc["id"];
+  ticket: TicketDoc;
 }
 
 // describes properties that a doc has
@@ -35,7 +35,7 @@ const orderSchema = new Schema(
       enum: Object.values(OrderStatus),
       default: OrderStatus.CREATED,
     },
-    expiredAt: {
+    expiresAt: {
       type: Schema.Types.Date,
     },
     ticket: {

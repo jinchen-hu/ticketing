@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { Ticket, TicketDoc } from "../../model/ticket";
 import { OrderStatus } from "@luketicketing/common/build";
 import { OrderDoc, Order } from "../../model/order";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("returns an error if the ticket does not exist", async () => {
   const ticketId = mongoose.Types.ObjectId();
@@ -42,18 +43,43 @@ it("returns an error if the ticket has been reserved", async () => {
 });
 
 it("reserves an ticket successfully", async () => {
-  // const ticket: TicketDoc = Ticket.build({
-  //   //id: mongoose.Types.ObjectId().toHexString(),
-  //   title: "concert",
-  //   price: 20,
-  // });
-  // await ticket.save();
-  //
-  // await request(app)
-  //   .post("/api/orders")
-  //   .set("Cookie", getMockCookie())
-  //   .send({ ticketId: ticket.id })
-  //   .expect(StatusCodes.CREATED);
+  const ticket: TicketDoc = Ticket.build({
+    //id: mongoose.Types.ObjectId().toHexString(),
+    title: "concert",
+    price: 20,
+  });
+  await ticket.save();
+
+  const numberOfTickets = await Ticket.count();
+
+  expect(numberOfTickets).toEqual(1);
+
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", getMockCookie())
+    .send({ ticketId: ticket.id })
+    .expect(StatusCodes.CREATED);
 });
 
 //TODO: 1. auth test  2. input test
+
+it("emit a create order event", async () => {
+  const ticket: TicketDoc = Ticket.build({
+    //id: mongoose.Types.ObjectId().toHexString(),
+    title: "concert",
+    price: 20,
+  });
+  await ticket.save();
+
+  const numberOfTickets = await Ticket.count();
+
+  expect(numberOfTickets).toEqual(1);
+
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", getMockCookie())
+    .send({ ticketId: ticket.id })
+    .expect(StatusCodes.CREATED);
+
+  expect(natsWrapper.client.publish).toBeCalled();
+});

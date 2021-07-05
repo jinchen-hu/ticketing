@@ -7,6 +7,8 @@ import {
 } from "@luketicketing/common/build";
 import { Order, OrderDoc } from "../model/order";
 import { StatusCodes } from "http-status-codes";
+import { OrderCancelledPublisher } from "../events/order-cancelled-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = Router();
 
@@ -17,21 +19,29 @@ router.delete(
   async (req: Request, res: Response) => {
     const { orderId } = req.params;
 
-    const order: OrderDoc | null = (await Order.findById(orderId)) || null;
+    const cancelledOrder: OrderDoc | null =
+      (await Order.findById(orderId).populate("ticket")) || null;
 
-    if (!order) {
+    if (!cancelledOrder) {
       throw new NotFoundError();
     }
 
-    if (order.userId !== req.currentUser!.id) {
+    if (cancelledOrder.userId !== req.currentUser!.id) {
       throw new NotAuthorized();
     }
 
-    order.status = OrderStatus.CANCELLED;
+    cancelledOrder.status = OrderStatus.CANCELLED;
 
-    await order.save();
+    await cancelledOrder.save();
 
-    res.status(StatusCodes.NO_CONTENT).send(order);
+    await new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: cancelledOrder.id,
+      ticket: {
+        id: cancelledOrder.ticket.id,
+      },
+    });
+
+    res.send(cancelledOrder);
   }
 );
 
