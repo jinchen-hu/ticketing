@@ -22,6 +22,8 @@ app.use(
   })
 );
 
+console.log("NODE ENV: ", process.env.NODE_ENV);
+
 app.use(currentUser);
 app.use(errorHandler);
 

@@ -5,15 +5,18 @@ import {
   OrderStatus,
   requireAuth,
   validateRequest,
-} from "@luketicketing/common/build";
+} from "@luketicketing/common";
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import mongoose from "mongoose";
 
 import { Ticket, TicketDoc } from "../model/ticket";
-import { Order, OrderDoc } from "../model/order";
+import { Order } from "../model/order";
+import { StatusCodes } from "http-status-codes";
 
 const router = Router();
+
+const EXPIRATION_WINDOW_SECONDS: number = 15 * 60;
 
 router.post(
   "/api/orders",
@@ -30,13 +33,15 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     // find the ticket
+    console.log("HI");
     const { ticketId } = req.body;
     let ticket: TicketDoc | null = null;
     try {
       ticket = await Ticket.findById(ticketId);
     } catch (e) {
-      console.log(e);
+      throw new DatabaseConnectionError();
     }
+    console.log("HI");
 
     if (!ticket) {
       throw new NotFoundError();
@@ -45,35 +50,39 @@ router.post(
     // check if the ticket is reserved
     // run query to look at all orders to find the associated order which is not cancelled
     // such kind of order means the ticket is reserved
-    let existingOrder: OrderDoc | null = null;
+    let isReserved: boolean;
     try {
-      existingOrder = await Order.findOne({
-        ticket: ticket,
-        status: {
-          $in: [
-            OrderStatus.CREATED,
-            OrderStatus.AWAITING_PAYMENT,
-            OrderStatus.COMPLETED,
-          ],
-        },
-      });
+      isReserved = await ticket.isReserved();
     } catch (e) {
       throw new DatabaseConnectionError();
     }
-
-    if (existingOrder) {
+    if (isReserved) {
       throw new BadRequestError("The ticket has been reserved");
     }
 
     // calculate the expiration date
+    const expiration: Date = new Date();
+    expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
     // create the order
+    const order = Order.build({
+      userId: req.currentUser!.id,
+      status: OrderStatus.CREATED,
+      expiresAt: expiration,
+      ticket: ticket.id,
+    });
+
+    try {
+      await order.save();
+    } catch (e) {
+      throw new DatabaseConnectionError();
+    }
 
     // associate the ticket with the order and save to the DB
 
     // publish an event
 
-    res.send({});
+    res.status(StatusCodes.CREATED).send(order);
   }
 );
 

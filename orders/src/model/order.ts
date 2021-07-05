@@ -7,7 +7,7 @@ export interface OrderAttrs {
   userId: string;
   status: OrderStatus;
   expiresAt: Date;
-  ticket: TicketDoc;
+  ticket: TicketDoc["id"];
 }
 
 // describes properties that a doc has
@@ -19,7 +19,7 @@ export interface OrderDoc extends Document {
 }
 
 // describe the properties that a order model has
-export interface OrderModel extends Model<OrderAttrs> {
+export interface OrderModel extends Model<OrderDoc> {
   build(attrs: OrderAttrs): OrderDoc;
 }
 
