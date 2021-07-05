@@ -6,5 +6,5 @@ var Subjects;
     Subjects["TICKET_CREATED"] = "ticket:created";
     Subjects["TICKET_UPDATED"] = "ticket:updated";
     Subjects["ORDER_CREATED"] = "order:created";
-    Subjects["ORDER_CANCELLED"] = "order:created";
+    Subjects["ORDER_CANCELLED"] = "order:cancelled";
 })(Subjects = exports.Subjects || (exports.Subjects = {}));
