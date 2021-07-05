@@ -6,6 +6,10 @@ import {
   currentUser,
 } from "@luketicketing/common";
 import cookieSession from "cookie-session";
+import { deleteOrderRouter } from "./routers/delete";
+import { createOrderRouter } from "./routers/new";
+import { showOrderRouter } from "./routers/show";
+import { indexOrderRouter } from "./routers";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -20,6 +24,11 @@ app.use(
 
 app.use(currentUser);
 app.use(errorHandler);
+
+app.use(deleteOrderRouter);
+app.use(createOrderRouter);
+app.use(showOrderRouter);
+app.use(indexOrderRouter);
 
 app.all("*", async (_req, _res, _next: NextFunction) => {
   throw new NotFoundError();
