@@ -35,6 +35,7 @@ router.delete(
 
     await new OrderCancelledPublisher(natsWrapper.client).publish({
       id: cancelledOrder.id,
+      version: cancelledOrder.version,
       ticket: {
         id: cancelledOrder.ticket.id,
       },

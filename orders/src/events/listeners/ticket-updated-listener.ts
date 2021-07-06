@@ -16,7 +16,7 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
     super(client);
   }
   async onMessage(data: TicketUpdatedEvent["data"], msg: Message) {
-    const ticket: TicketDoc | null = (await Ticket.findById(data.id)) || null;
+    const ticket: TicketDoc | null = (await Ticket.findByEvent(data)) || null;
     if (!ticket) {
       throw new NotFoundError();
     }

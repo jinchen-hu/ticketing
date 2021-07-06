@@ -1,4 +1,5 @@
 import { Document, Schema, Model, model } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "@luketicketing/common/build";
 import { TicketDoc } from "./ticket";
 
@@ -16,6 +17,7 @@ export interface OrderDoc extends Document {
   status: OrderStatus;
   expiresAt: Date;
   ticket: TicketDoc;
+  version: number;
 }
 
 // describe the properties that a order model has
@@ -50,8 +52,11 @@ const orderSchema = new Schema(
         delete ret._id;
       },
     },
+    versionKey: "version",
   }
 );
+
+orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (attrs: OrderAttrs) => {
   return new Order(attrs);

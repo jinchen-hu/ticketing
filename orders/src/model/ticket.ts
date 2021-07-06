@@ -1,9 +1,7 @@
-import { Document, model, Model, Schema, Types } from "mongoose";
+import { Document, model, Model, Schema } from "mongoose";
 import { Order, OrderDoc } from "./order";
-import {
-  DatabaseConnectionError,
-  OrderStatus,
-} from "@luketicketing/common/build";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
+import { OrderStatus } from "@luketicketing/common/build";
 
 export interface TicketAttrs {
   id: string;
@@ -14,11 +12,16 @@ export interface TicketAttrs {
 export interface TicketDoc extends Document {
   title: string;
   price: number;
+  version: number;
   isReserved(): Promise<boolean>;
 }
 
 export interface TicketModel extends Model<TicketDoc> {
   build(attrs: TicketAttrs): TicketDoc;
+  findByEvent(event: {
+    id: string;
+    version: number;
+  }): Promise<TicketDoc | null>;
 }
 
 const ticketSchema = new Schema(
@@ -43,6 +46,9 @@ const ticketSchema = new Schema(
   }
 );
 
+ticketSchema.set("versionKey", "version");
+ticketSchema.plugin(updateIfCurrentPlugin);
+
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket({
     _id: attrs.id,
@@ -51,17 +57,25 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
   });
 };
 
-ticketSchema.methods.isReserved = async function () {
-  const existingOrder = await Order.findOne({
-    ticket: this.id,
-    status: {
-      $in: [
-        OrderStatus.CREATED,
-        OrderStatus.AWAITING_PAYMENT,
-        OrderStatus.COMPLETED,
-      ],
-    },
+ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
+  return Ticket.findOne({
+    _id: event.id,
+    version: event.version - 1,
   });
+};
+
+ticketSchema.methods.isReserved = async function () {
+  const existingOrder: OrderDoc | null =
+    (await Order.findOne({
+      ticket: this.id,
+      status: {
+        $in: [
+          OrderStatus.CREATED,
+          OrderStatus.AWAITING_PAYMENT,
+          OrderStatus.COMPLETED,
+        ],
+      },
+    })) || null;
 
   return !!existingOrder;
 };

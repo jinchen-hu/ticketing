@@ -3,10 +3,11 @@ import { Ticket, TicketDoc } from "../../model/ticket";
 import { getMockCookie } from "../../test/setup";
 import app from "../../app";
 import { StatusCodes } from "http-status-codes";
-import supertest from "supertest";
+import mongoose from "mongoose";
 
 it("fetch the order", async () => {
   const ticket: TicketDoc = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "concert",
     price: 20,
   });
