@@ -52,6 +52,7 @@ router.put(
         price: ticket.price,
         id: ticket.id,
         userId: ticket.userId,
+        version: ticket.version,
       });
     } catch (e) {
       throw new DatabaseConnectionError();
