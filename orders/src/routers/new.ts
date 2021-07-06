@@ -11,7 +11,7 @@ import { body } from "express-validator";
 import { Ticket, TicketDoc } from "../model/ticket";
 import { Order } from "../model/order";
 import { StatusCodes } from "http-status-codes";
-import { OrderCreatedPublisher } from "../events/order-created-publisher";
+import { OrderCreatedPublisher } from "../events/publisher/order-created-publisher";
 import { natsWrapper } from "../nats-wrapper";
 
 const router = Router();

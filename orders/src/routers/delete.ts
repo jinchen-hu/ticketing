@@ -6,8 +6,7 @@ import {
   requireAuth,
 } from "@luketicketing/common/build";
 import { Order, OrderDoc } from "../model/order";
-import { StatusCodes } from "http-status-codes";
-import { OrderCancelledPublisher } from "../events/order-cancelled-publisher";
+import { OrderCancelledPublisher } from "../events/publisher/order-cancelled-publisher";
 import { natsWrapper } from "../nats-wrapper";
 
 const router = Router();

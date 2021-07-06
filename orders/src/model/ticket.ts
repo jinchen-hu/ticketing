@@ -1,4 +1,4 @@
-import { Document, model, Model, Schema } from "mongoose";
+import { Document, model, Model, Schema, Types } from "mongoose";
 import { Order, OrderDoc } from "./order";
 import {
   DatabaseConnectionError,
@@ -6,7 +6,7 @@ import {
 } from "@luketicketing/common/build";
 
 export interface TicketAttrs {
-  //id: string;
+  id: string;
   title: string;
   price: number;
 }
@@ -44,7 +44,11 @@ const ticketSchema = new Schema(
 );
 
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
-  return new Ticket(attrs);
+  return new Ticket({
+    _id: attrs.id,
+    title: attrs.title,
+    price: attrs.price,
+  });
 };
 
 ticketSchema.methods.isReserved = async function () {
