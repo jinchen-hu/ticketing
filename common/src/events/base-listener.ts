@@ -29,7 +29,7 @@ abstract class Listener<T extends Event> {
       .setManualAckMode(true)
       .setAckWait(this.ackWait)
       .setDeliverAllAvailable() // get all available events at the very first time
-      .setDurableName("accounting-service");
+      .setDurableName(this.queueGroupName);
     // queue group will make sure that all instances of the same service
     // will receive the message/event exactly once
   }
