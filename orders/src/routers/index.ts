@@ -1,5 +1,5 @@
 import { Response, Request, Router } from "express";
-import { requireAuth } from "@luketicketing/common/build";
+import { requireAuth } from "@luketicketing/common";
 import { Order } from "../model/order";
 
 const router = Router();

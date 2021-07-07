@@ -4,7 +4,7 @@ import {
   NotFoundError,
   OrderStatus,
   requireAuth,
-} from "@luketicketing/common/build";
+} from "@luketicketing/common";
 import { Order, OrderDoc } from "../model/order";
 import { OrderCancelledPublisher } from "../events/publisher/order-cancelled-publisher";
 import { natsWrapper } from "../nats-wrapper";

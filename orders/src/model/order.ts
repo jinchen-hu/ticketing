@@ -1,6 +1,6 @@
 import { Document, Schema, Model, model } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
-import { OrderStatus } from "@luketicketing/common/build";
+import { OrderStatus } from "@luketicketing/common";
 import { TicketDoc } from "./ticket";
 
 // describe the properties that are required to build a new order

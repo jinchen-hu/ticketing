@@ -3,7 +3,7 @@ import {
   NotAuthorized,
   NotFoundError,
   requireAuth,
-} from "@luketicketing/common/build";
+} from "@luketicketing/common";
 import { Order, OrderDoc } from "../model/order";
 
 const router = Router();

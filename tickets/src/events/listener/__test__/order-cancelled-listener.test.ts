@@ -2,7 +2,7 @@ import { OrderCancelledListener } from "../order-cancelled-listener";
 import { natsWrapper } from "../../../nats-wrapper";
 import { Ticket } from "../../../models/ticket";
 import mongoose from "mongoose";
-import { OrderCancelledEvent } from "@luketicketing/common/build";
+import { OrderCancelledEvent } from "@luketicketing/common";
 import { Message } from "node-nats-streaming";
 
 const setup = async () => {

@@ -1,9 +1,9 @@
-import Listener from "@luketicketing/common/build/events/base-listener";
 import {
   NotFoundError,
   Subjects,
+  Listener,
   TicketUpdatedEvent,
-} from "@luketicketing/common/build";
+} from "@luketicketing/common";
 import { queueGroupName } from "./queue-group-name";
 import { Message, Stan } from "node-nats-streaming";
 import { Ticket, TicketDoc } from "../../model/ticket";

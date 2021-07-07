@@ -2,7 +2,7 @@ import { OrderCreatedListener } from "../order-created-listener";
 import { natsWrapper } from "../../../nats-wrapper";
 import { Ticket, TicketDoc } from "../../../models/ticket";
 import mongoose from "mongoose";
-import { OrderCreatedEvent, OrderStatus } from "@luketicketing/common/build";
+import { OrderCreatedEvent, OrderStatus } from "@luketicketing/common";
 import { Message } from "node-nats-streaming";
 
 const setup = async () => {

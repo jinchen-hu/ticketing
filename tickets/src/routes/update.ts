@@ -10,7 +10,7 @@ import {
 import { Ticket, TicketDoc } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publisher/ticket-updated-publisher";
 import { natsWrapper } from "../nats-wrapper";
-import { BadRequestError } from "@luketicketing/common/build";
+import { BadRequestError } from "@luketicketing/common";
 
 const router = express.Router();
 

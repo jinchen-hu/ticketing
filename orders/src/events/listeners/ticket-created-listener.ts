@@ -1,5 +1,4 @@
-import Listener from "@luketicketing/common/build/events/base-listener";
-import { Subjects, TicketCreatedEvent } from "@luketicketing/common/build";
+import { Subjects, TicketCreatedEvent, Listener } from "@luketicketing/common";
 import { Message, Stan } from "node-nats-streaming";
 import { queueGroupName } from "./queue-group-name";
 import { Ticket, TicketDoc } from "../../model/ticket";

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { Ticket } from "../models/ticket";
-import { NotFoundError } from "@luketicketing/common/build";
+import { NotFoundError } from "@luketicketing/common";
 
 const router = express.Router();
 

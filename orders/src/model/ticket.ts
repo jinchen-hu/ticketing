@@ -1,7 +1,7 @@
 import { Document, model, Model, Schema } from "mongoose";
 import { Order, OrderDoc } from "./order";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
-import { OrderStatus } from "@luketicketing/common/build";
+import { OrderStatus } from "@luketicketing/common";
 
 export interface TicketAttrs {
   id: string;

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { Ticket } from "../models/ticket";
-import { DatabaseConnectionError } from "@luketicketing/common/build";
+import { DatabaseConnectionError } from "@luketicketing/common";
 
 const router = express.Router();
 

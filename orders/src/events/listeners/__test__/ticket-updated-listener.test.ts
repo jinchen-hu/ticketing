@@ -3,7 +3,7 @@ import { natsWrapper } from "../../../nats-wrapper";
 import { Ticket, TicketDoc } from "../../../model/ticket";
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
-import { NotFoundError, TicketUpdatedEvent } from "@luketicketing/common/build";
+import { NotFoundError, TicketUpdatedEvent } from "@luketicketing/common";
 
 const setup = async () => {
   // create a listener

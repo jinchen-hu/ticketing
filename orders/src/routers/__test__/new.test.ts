@@ -4,7 +4,7 @@ import app from "../../app";
 import { getMockCookie } from "../../test/setup";
 import { StatusCodes } from "http-status-codes";
 import { Ticket, TicketDoc } from "../../model/ticket";
-import { OrderStatus } from "@luketicketing/common/build";
+import { OrderStatus } from "@luketicketing/common";
 import { OrderDoc, Order } from "../../model/order";
 import { natsWrapper } from "../../nats-wrapper";
 

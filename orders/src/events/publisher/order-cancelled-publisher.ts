@@ -2,7 +2,7 @@ import {
   OrderCancelledEvent,
   Publisher,
   Subjects,
-} from "@luketicketing/common/build";
+} from "@luketicketing/common";
 import { Stan } from "node-nats-streaming";
 
 export class OrderCancelledPublisher extends Publisher<OrderCancelledEvent> {

@@ -2,7 +2,7 @@ import { Ticket, TicketDoc } from "../../model/ticket";
 import { getMockCookie } from "../../test/setup";
 import app from "../../app";
 import request from "supertest";
-import { OrderStatus } from "@luketicketing/common/build";
+import { OrderStatus } from "@luketicketing/common";
 import { natsWrapper } from "../../nats-wrapper";
 import { StatusCodes } from "http-status-codes";
 import mongoose from "mongoose";
