@@ -10,6 +10,7 @@ import {
 import { Ticket, TicketDoc } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publisher/ticket-updated-publisher";
 import { natsWrapper } from "../nats-wrapper";
+import { BadRequestError } from "@luketicketing/common/build";
 
 const router = express.Router();
 
@@ -24,16 +25,14 @@ router.put(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    let ticket: TicketDoc | null;
-    try {
-      ticket = await Ticket.findById(req.params.id);
-    } catch (e) {
-      console.log(e);
-      throw new DatabaseConnectionError();
-    }
+    const ticket: TicketDoc | null = await Ticket.findById(req.params.id);
 
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    if (ticket.orderId) {
+      throw new BadRequestError("The ticket is being reserved");
     }
 
     if (ticket.userId !== req.currentUser!.id) {
