@@ -11,12 +11,15 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   }
 
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
+    const delay: number =
+      new Date(data.expiresAt).getTime() - new Date().getTime();
+
     await expirationQueue.add(
       {
         orderId: data.id,
       },
       {
-        delay: 10000,
+        delay,
       }
     );
 
