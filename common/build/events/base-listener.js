@@ -1,23 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Listener = void 0;
 var Listener = /** @class */ (function () {
     function Listener(client) {
         this.ackWait = 5 * 1000;
         this.client = client;
     }
     Listener.prototype.subscriptionOptions = function () {
-        // the subscriber/consumer will not acknowledge the event
-        // until we set the ask() method on the message
-        // the nats-streaming-server will redelivery the event after 5s
-        // if the event is not acknowledged
         return this.client
             .subscriptionOptions()
+            .setDeliverAllAvailable()
             .setManualAckMode(true)
             .setAckWait(this.ackWait)
-            .setDeliverAllAvailable() // get all available events at the very first time
             .setDurableName(this.queueGroupName);
-        // queue group will make sure that all instances of the same service
-        // will receive the message/event exactly once
     };
     Listener.prototype.listen = function () {
         var _this = this;
@@ -32,8 +27,8 @@ var Listener = /** @class */ (function () {
         var data = msg.getData();
         return typeof data === "string"
             ? JSON.parse(data)
-            : JSON.parse(data.toString("utf-8"));
+            : JSON.parse(data.toString("utf8"));
     };
     return Listener;
 }());
-exports.default = Listener;
+exports.Listener = Listener;
