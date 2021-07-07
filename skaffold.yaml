@@ -48,3 +48,13 @@ build:
         manual:
           - src: "scr/**/*.ts"
             dest: .
+    - image: jinchenhu/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "scr/**/*.ts"
+            dest: .
