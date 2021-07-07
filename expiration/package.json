@@ -19,15 +19,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/bull": "^3.15.2",
-    "@types/jest": "^26.0.23",
+    "@types/jest": "^26.0.24",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@luketicketing/common": "^1.0.13",
+    "@luketicketing/common": "^1.0.14",
+    "@types/bull": "^3.15.2",
     "bull": "^3.22.10",
     "dotenv": "^10.0.0",
     "node-nats-streaming": "^0.3.2",
