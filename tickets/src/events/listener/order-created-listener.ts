@@ -40,7 +40,5 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       version: ticket.version,
     });
     msg.ack();
-
-    //ack
   }
 }
