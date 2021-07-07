@@ -21,7 +21,7 @@ router.delete(
     const cancelledOrder: OrderDoc | null =
       (await Order.findById(orderId).populate("ticket")) || null;
 
-    if (!cancelledOrder) {
+    if (!cancelledOrder || !cancelledOrder.ticket) {
       throw new NotFoundError();
     }
 
