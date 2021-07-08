@@ -1,9 +1,29 @@
 import { buildClient } from "../api/build-client";
 import { BaseLayout } from "../components/BaseLayout";
-const HomePage = ({ currentUser }) => {
+const HomePage = ({ currentUser, tickets }) => {
+  const renderedTickets = tickets?.tickets.map((ticket) => {
+    return (
+      <tr key={ticket.id}>
+        <td>{ticket.title}</td>
+        <td>{ticket.price}</td>
+      </tr>
+    );
+  });
+
   return (
     <BaseLayout currentUser={currentUser ? currentUser.currentUser : null}>
-      Hello {currentUser?.currentUser ? "You are signed in" : "Please sign in"}
+      <div>
+        <h1>Tickets</h1>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>{renderedTickets}</tbody>
+        </table>
+      </div>
     </BaseLayout>
   );
 };
@@ -17,12 +37,16 @@ export async function getServerSideProps(context) {
     const currentUserRes = await client.get("/api/users/currentuser");
     currentUser = currentUserRes.data || null;
     console.log("current user loaded in index.js", currentUser);
+
+    const ticketsRes = await client.get("/api/tickets");
+    tickets = ticketsRes.data || null;
+    console.log("list of tickets loaded in index.js", tickets);
   } catch (e) {
     console.log("something wrong when fetching data from client");
   }
 
   return {
-    props: { currentUser },
+    props: { currentUser, tickets },
   };
 }
 
