@@ -25,7 +25,6 @@ app.use(
 console.log("NODE ENV: ", process.env.NODE_ENV);
 
 app.use(currentUser);
-app.use(errorHandler);
 
 app.use(deleteOrderRouter);
 app.use(createOrderRouter);
@@ -35,5 +34,7 @@ app.use(indexOrderRouter);
 app.all("*", async (_req, _res, _next: NextFunction) => {
   throw new NotFoundError();
 });
+
+app.use(errorHandler);
 
 export default app;
