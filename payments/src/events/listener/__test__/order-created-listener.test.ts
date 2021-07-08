@@ -35,6 +35,5 @@ it("should replicate the order info", async () => {
 
   const order = await Order.findById(data.id);
   expect(order!.price).toEqual(data.ticket.price);
-  console.log(order!.version);
   expect(msg.ack).toBeCalled();
 });

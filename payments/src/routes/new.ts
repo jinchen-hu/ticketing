@@ -10,6 +10,7 @@ import {
 import { StatusCodes } from "http-status-codes";
 import { OrderDoc, Order } from "../model/order";
 import { OrderStatus } from "@luketicketing/common/build";
+import { stripe } from "../stripe";
 
 const router = express.Router();
 
@@ -37,6 +38,12 @@ router.post(
     if (order.status === OrderStatus.CANCELLED) {
       throw new BadRequestError("The order is cancelled");
     }
+
+    await stripe.charges?.create({
+      currency: "cad",
+      amount: order.price * 100,
+      source: token,
+    });
 
     res.status(StatusCodes.CREATED).send({ success: true });
   }
