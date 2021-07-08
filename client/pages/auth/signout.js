@@ -12,14 +12,7 @@ const Signout = () => {
   });
 
   useEffect(() => {
-    async function fetchPost() {
-      try {
-        await doRequest();
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    fetchPost();
+    doRequest();
   }, []);
 
   return null;

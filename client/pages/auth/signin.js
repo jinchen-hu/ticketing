@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import useRequest from "../../hooks/use-request";
+import { BaseLayout } from "../../components/BaseLayout";
 
-const Signin = () => {
+const Signin = ({ currentUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -28,23 +29,23 @@ const Signin = () => {
     await doRequest();
   };
 
-  const renderErrors = (errs) => {
-    if (errs?.length > 0) {
-      return (
-        <div className="alert alert-danger">
-          <h4>Whoops...</h4>
-          <ul className="my-0">
-            {errs.map((err) => (
-              <li key={err.message}>{err.message}</li>
-            ))}
-          </ul>
-        </div>
-      );
-    }
-  };
+  // const renderErrors = (errs) => {
+  //   if (errs?.length > 0) {
+  //     return (
+  //       <div className="alert alert-danger">
+  //         <h4>Whoops...</h4>
+  //         <ul className="my-0">
+  //           {errs.map((err) => (
+  //             <li key={err.message}>{err.message}</li>
+  //           ))}
+  //         </ul>
+  //       </div>
+  //     );
+  //   }
+  // };
 
   return (
-    <div>
+    <BaseLayout currentUser={currentUser?.currentUser}>
       <form onSubmit={onSubmit}>
         <h1>Sign in</h1>
         <div className="form-group">
@@ -67,7 +68,7 @@ const Signin = () => {
         {errors}
         <button className="btn btn-primary">Sign in</button>
       </form>
-    </div>
+    </BaseLayout>
   );
 };
 

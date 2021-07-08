@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import useRequest from "../../hooks/use-request";
+import { BaseLayout } from "../../components/BaseLayout";
+import { buildClient } from "../../api/build-client";
 
-const Signup = () => {
+const Signup = ({ currentUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -28,23 +30,23 @@ const Signup = () => {
     await doRequest();
   };
 
-  const renderErrors = (errs) => {
-    if (errs?.length > 0) {
-      return (
-        <div className="alert alert-danger">
-          <h4>Whoops...</h4>
-          <ul className="my-0">
-            {errs.map((err) => (
-              <li key={err.message}>{err.message}</li>
-            ))}
-          </ul>
-        </div>
-      );
-    }
-  };
+  // const renderErrors = (errs) => {
+  //   if (errs?.length > 0) {
+  //     return (
+  //       <div className="alert alert-danger">
+  //         <h4>Whoops...</h4>
+  //         <ul className="my-0">
+  //           {errs.map((err) => (
+  //             <li key={err.message}>{err.message}</li>
+  //           ))}
+  //         </ul>
+  //       </div>
+  //     );
+  //   }
+  // };
 
   return (
-    <div>
+    <BaseLayout currentUser={currentUser?.currentUser}>
       <form onSubmit={onSubmit}>
         <h1>Sign up</h1>
         <div className="form-group">
@@ -67,8 +69,26 @@ const Signup = () => {
         {errors}
         <button className="btn btn-primary">Submit</button>
       </form>
-    </div>
+    </BaseLayout>
   );
 };
 
 export default Signup;
+
+// export async function getServerSideProps(context) {
+//   console.log("update current user after sign up");
+//   const client = buildClient(context);
+//
+//   let currentUser;
+//   try {
+//     const currentUserRes = await client.get("/api/users/currentuser");
+//     currentUser = currentUserRes.data || null;
+//     console.log("current user loaded in index.js", currentUser);
+//   } catch (e) {
+//     console.log("something wrong when fetching data from client");
+//   }
+//
+//   return {
+//     props: { currentUser },
+//   };
+// }
