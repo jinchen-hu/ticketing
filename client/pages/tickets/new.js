@@ -28,7 +28,6 @@ const NewTicket = ({ currentUser }) => {
     if (isNaN(value)) {
       return;
     }
-
     setPrice(value.toFixed(2));
   };
 

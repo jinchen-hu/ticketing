@@ -1,11 +1,17 @@
 import { buildClient } from "../api/build-client";
 import { BaseLayout } from "../components/BaseLayout";
+import Link from "next/link";
 const HomePage = ({ currentUser, tickets }) => {
-  const renderedTickets = tickets?.tickets.map((ticket) => {
+  const renderedTickets = tickets?.map((ticket) => {
     return (
       <tr key={ticket.id}>
         <td>{ticket.title}</td>
         <td>{ticket.price}</td>
+        <td>
+          <Link href={`/tickets/${encodeURIComponent(ticket.id)}`}>
+            <a>View</a>
+          </Link>
+        </td>
       </tr>
     );
   });
@@ -19,6 +25,7 @@ const HomePage = ({ currentUser, tickets }) => {
             <tr>
               <th>Title</th>
               <th>Price</th>
+              <th>Link</th>
             </tr>
           </thead>
           <tbody>{renderedTickets}</tbody>
@@ -29,7 +36,7 @@ const HomePage = ({ currentUser, tickets }) => {
 };
 
 export async function getServerSideProps(context) {
-  console.log("FROM INDEX PAGE");
+  console.log("Index page loads current user and list of tickets on server");
   const client = buildClient(context);
 
   let currentUser, tickets;
