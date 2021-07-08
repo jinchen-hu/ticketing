@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import { Order } from "../../model/order";
 import { OrderStatus } from "@luketicketing/common";
 import { stripe } from "../../stripe";
+import { Payment } from "../../model/payment";
 
 //jest.mock("../../stripe");
 it("should throw 404 when purchasing an order not existing", async () => {
@@ -88,4 +89,12 @@ it("should return 201 with valid inputs", async () => {
   );
 
   expect(stripeCharge).toBeDefined();
+
+  const payment =
+    (await Payment.findOne({
+      orderId: orderId,
+      stripeId: stripeCharge!.id,
+    })) || null;
+
+  expect(payment).not.toBeNull();
 });

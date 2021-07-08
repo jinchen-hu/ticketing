@@ -11,6 +11,9 @@ import { StatusCodes } from "http-status-codes";
 import { OrderDoc, Order } from "../model/order";
 import { OrderStatus } from "@luketicketing/common/build";
 import { stripe } from "../stripe";
+import { Payment, PaymentDoc } from "../model/payment";
+import { PaymentCreatedPublisher } from "../events/publisher/payment-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -39,13 +42,26 @@ router.post(
       throw new BadRequestError("The order is cancelled");
     }
 
-    await stripe.charges?.create({
+    const charge = await stripe.charges?.create({
       currency: "cad",
       amount: order.price * 100,
       source: token,
     });
 
-    res.status(StatusCodes.CREATED).send({ success: true });
+    const payment: PaymentDoc = Payment.build({
+      orderId,
+      stripeId: charge.id,
+    });
+
+    await payment.save();
+
+    await new PaymentCreatedPublisher(natsWrapper.client).publish({
+      id: payment.id,
+      orderId: payment.orderId,
+      stripeId: payment.stripeId,
+    });
+
+    res.status(StatusCodes.CREATED).send({ id: payment.id });
   }
 );
 
