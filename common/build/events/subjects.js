@@ -8,4 +8,5 @@ var Subjects;
     Subjects["ORDER_CREATED"] = "order:created";
     Subjects["ORDER_CANCELLED"] = "order:cancelled";
     Subjects["EXPIRATION_COMPLETED"] = "expiration:completed";
+    Subjects["PAYMENT_CREATED"] = "payment:created";
 })(Subjects = exports.Subjects || (exports.Subjects = {}));
