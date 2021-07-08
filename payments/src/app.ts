@@ -6,6 +6,7 @@ import {
   currentUser,
 } from "@luketicketing/common";
 import cookieSession from "cookie-session";
+import { ChargeCreatedRouter } from "./routes/new";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -21,6 +22,7 @@ app.use(
 app.use(currentUser);
 app.use(errorHandler);
 
+app.use(ChargeCreatedRouter);
 
 app.all("*", async (_req, _res, _next: NextFunction) => {
   throw new NotFoundError();

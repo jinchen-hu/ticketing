@@ -38,12 +38,11 @@ afterAll(async () => {
 });
 export const fakeTicketId = new mongoose.Types.ObjectId().toHexString();
 
-export const getMockCookie = (): string[] => {
+export const getMockCookie = (id?: string): string[] => {
   // build JWT payload
-  const id = new mongoose.Types.ObjectId().toHexString();
-  //console.log(id);
+
   const payload = {
-    id,
+    id: id || new mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
   };
 
