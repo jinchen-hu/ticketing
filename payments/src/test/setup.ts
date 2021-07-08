@@ -1,13 +1,13 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { JWT_KEY } from "../../config";
+import { JWT_KEY, STRIPE_KEY } from "../../config";
 import jwt from "jsonwebtoken";
 // fake import
 jest.mock("../nats-wrapper");
 
 let mongo: any;
 beforeAll(async () => {
-  process.env.JWT_KEY = JWT_KEY;
+  //process.env.JWT_KEY = JWT_KEY;
   mongo = new MongoMemoryServer();
   await mongo.start();
   const mongoUri = await mongo.getUri();
@@ -47,7 +47,7 @@ export const getMockCookie = (id?: string): string[] => {
   };
 
   // create the JWT
-  const token = jwt.sign(payload, process.env.JWT_KEY!);
+  const token = jwt.sign(payload, JWT_KEY);
   // build session object
   const session = { jwt: token };
   // turn that session into JSON
