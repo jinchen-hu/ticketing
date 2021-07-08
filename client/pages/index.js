@@ -17,7 +17,7 @@ const HomePage = ({ currentUser, tickets }) => {
   });
 
   return (
-    <BaseLayout currentUser={currentUser ? currentUser.currentUser : null}>
+    <BaseLayout currentUser={currentUser}>
       <div>
         <h1>Tickets</h1>
         <table className="table">
@@ -36,20 +36,19 @@ const HomePage = ({ currentUser, tickets }) => {
 };
 
 export async function getServerSideProps(context) {
-  console.log("Index page loads current user and list of tickets on server");
   const client = buildClient(context);
 
   let currentUser, tickets;
   try {
     const currentUserRes = await client.get("/api/users/currentuser");
-    currentUser = currentUserRes.data || null;
-    console.log("current user loaded in index.js", currentUser);
+    currentUser = currentUserRes?.data?.currentUser || null;
+    console.log("current user loaded in homepage", currentUser);
 
     const ticketsRes = await client.get("/api/tickets");
     tickets = ticketsRes.data || null;
-    console.log("list of tickets loaded in index.js", tickets);
+    console.log("list of tickets loaded in in homepage", tickets);
   } catch (e) {
-    console.log("something wrong when fetching data from client");
+    console.log("something wrong when fetching data from client in homepage");
   }
 
   return {

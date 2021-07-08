@@ -13,7 +13,6 @@ const useRequest = ({ url, method, body, onSuccess }) => {
       }
       return response.data;
     } catch (e) {
-      console.log(e.response.data);
       setErrors(
         <div className="alert alert-danger">
           <h4>Whoops...</h4>

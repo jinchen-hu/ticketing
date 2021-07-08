@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import useRequest from "../../hooks/use-request";
 import { BaseLayout } from "../../components/BaseLayout";
+import { buildClient } from "../../api/build-client";
 
 const Signin = ({ currentUser }) => {
   const [email, setEmail] = useState("");
@@ -45,7 +46,7 @@ const Signin = ({ currentUser }) => {
   // };
 
   return (
-    <BaseLayout currentUser={currentUser?.currentUser}>
+    <BaseLayout currentUser={currentUser}>
       <form onSubmit={onSubmit}>
         <h1>Sign in</h1>
         <div className="form-group">
@@ -73,3 +74,22 @@ const Signin = ({ currentUser }) => {
 };
 
 export default Signin;
+
+export async function getServerSideProps(context) {
+  const client = buildClient(context);
+
+  let currentUser;
+  try {
+    const currentUserRes = await client.get("/api/users/currentuser");
+    currentUser = currentUserRes?.data?.currentUser || null;
+    console.log("current user loaded in sign in page", currentUser);
+  } catch (e) {
+    console.log(
+      "something wrong when fetching data from client in sign in page"
+    );
+  }
+
+  return {
+    props: { currentUser },
+  };
+}

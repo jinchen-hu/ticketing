@@ -46,7 +46,7 @@ const Signup = ({ currentUser }) => {
   // };
 
   return (
-    <BaseLayout currentUser={currentUser?.currentUser}>
+    <BaseLayout currentUser={currentUser}>
       <form onSubmit={onSubmit}>
         <h1>Sign up</h1>
         <div className="form-group">
@@ -75,20 +75,22 @@ const Signup = ({ currentUser }) => {
 
 export default Signup;
 
-// export async function getServerSideProps(context) {
-//   console.log("update current user after sign up");
-//   const client = buildClient(context);
-//
-//   let currentUser;
-//   try {
-//     const currentUserRes = await client.get("/api/users/currentuser");
-//     currentUser = currentUserRes.data || null;
-//     console.log("current user loaded in index.js", currentUser);
-//   } catch (e) {
-//     console.log("something wrong when fetching data from client");
-//   }
-//
-//   return {
-//     props: { currentUser },
-//   };
-// }
+export async function getServerSideProps(context) {
+  console.log("update current user after sign up");
+  const client = buildClient(context);
+
+  let currentUser;
+  try {
+    const currentUserRes = await client.get("/api/users/currentuser");
+    currentUser = currentUserRes?.data?.currentUser || null;
+    console.log("current user loaded in sign up page", currentUser);
+  } catch (e) {
+    console.log(
+      "something wrong when fetching data from client in sign up page"
+    );
+  }
+
+  return {
+    props: { currentUser },
+  };
+}

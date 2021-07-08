@@ -12,8 +12,10 @@ const Signout = () => {
   });
 
   useEffect(() => {
-    doRequest();
-  }, []);
+    doRequest().catch((e) => {
+      console.log(e);
+    });
+  }, [doRequest]);
 
   return null;
 };
