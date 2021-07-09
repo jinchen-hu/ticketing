@@ -1,6 +1,7 @@
 import { BaseLayout } from "../../components/BaseLayout";
 import { buildClient } from "../../api/build-client";
 import { useEffect, useState } from "react";
+import StripeCheckout from "react-stripe-checkout";
 
 const OrderShow = ({ currentUser, order }) => {
   const [timeLeft, setTimeLeft] = useState(0);
@@ -19,7 +20,19 @@ const OrderShow = ({ currentUser, order }) => {
   const timerDisplay =
     timeLeft <= 0 ? "OrderExpired" : `Time left to pay: ${timeLeft} seconds`;
 
-  return <BaseLayout currentUser={currentUser}>{timerDisplay}</BaseLayout>;
+  return (
+    <BaseLayout currentUser={currentUser}>
+      {timerDisplay}
+      <StripeCheckout
+        token={(token) => {
+          console.log(token);
+        }}
+        stripeKey={`${process.env.STRIPE_PUB_KEY}`}
+        amount={order?.ticket?.price * 100}
+        email={currentUser.email}
+      />
+    </BaseLayout>
+  );
 };
 
 export default OrderShow;
