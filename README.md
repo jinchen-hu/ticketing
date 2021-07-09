@@ -28,7 +28,7 @@
 - Migrate client from JS to TS
 - Change to GraphQL as front-end web api
 - Enable database transaction
-- Change bootstrap4 to Material UI or Sematic UI
+- Enhance and style UI
 - Document project with Swagger-UI
 - Use Wiston as logger
 - Replace NATS with a more efficient and featured Event Broker -- Kafka or RabbitMQ
