@@ -1,0 +1,25 @@
+# name of the workflow
+name: tests-orders
+
+on:
+  pull_request:
+    paths:
+      - "orders/**"
+      - ".github/workflows/tests-orders.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - run: |
+          cd orders
+          npm ci
+          npm run test:ci
+        env:
+          JWT_KEY: ${{secrets.JWT_KEY}}
