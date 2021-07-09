@@ -35,6 +35,8 @@ router.post(
     }
 
     if (order.userId !== req.currentUser!.id) {
+      console.log("userId: ", order.userId);
+      console.log("current id: ", req.currentUser!.id);
       throw new NotAuthorized();
     }
 
