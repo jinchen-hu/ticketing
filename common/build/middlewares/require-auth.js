@@ -4,6 +4,7 @@ exports.requireAuth = void 0;
 var not_authorized_1 = require("../errors/not-authorized");
 var requireAuth = function (req, _res, next) {
     if (!req.currentUser) {
+        console.error("There is no current user");
         throw new not_authorized_1.NotAuthorized();
     }
     next();

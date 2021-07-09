@@ -7,6 +7,7 @@ export const requireAuth = (
   next: NextFunction
 ) => {
   if (!req.currentUser) {
+    console.error("There is no current user");
     throw new NotAuthorized();
   }
   next();
