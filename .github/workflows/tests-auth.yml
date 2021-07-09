@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - "auth/**"
+      - ".github/workflows/test-auth.yml"
 
 jobs:
   build:
@@ -16,9 +17,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-      - run: cd auth
-      - name: Install dependencies
-        run: npm install
-      - run: npm run test:ci
+      - run: |
+          cd auth
+          npm ci
+          npm run test:ci
         env:
           JWT_KEY: ${{secrets.JWT_KEY}}
