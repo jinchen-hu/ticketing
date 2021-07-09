@@ -7,8 +7,9 @@ import { StatusCodes } from "http-status-codes";
 
 let mongo: any;
 beforeAll(async () => {
-  process.env.JWT_KEY = JWT_KEY;
+  process.env.JWT_KEY = JWT_KEY!;
   mongo = new MongoMemoryServer();
+  await mongo.start();
   const mongoUri = await mongo.getUri();
 
   await mongoose.connect(mongoUri, {
