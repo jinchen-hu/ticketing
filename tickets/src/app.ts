@@ -12,6 +12,7 @@ import { indexTicketRouter } from "./routes";
 import { updateTicketRouter } from "./routes/update";
 
 const app = express();
+
 app.set("trust proxy", 1);
 app.use(express.json());
 
